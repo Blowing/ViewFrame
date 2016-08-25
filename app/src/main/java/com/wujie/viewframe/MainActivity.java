@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initHeader() {
         ImageView btnBack = (ImageView) findViewById(R.id.image);
+        btnBack.setOnClickListener(this);
         TextView headerTitle = (TextView) findViewById(R.id.header_title);
         btnChoose = (Button) findViewById(R.id.btn_choose);
         btnChoose.setOnClickListener(this);
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.image:
                 isChooseAll = chooseState.adefault;
+                btnChoose.setText("全选");
                 checkMap.clear();
 
                 break;
@@ -77,14 +79,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             checkMap.put(i, mList.get(i));
                         }
                         isChooseAll = chooseState.notAll;
-                        btnChoose.setText("全不选");
+                        btnChoose.setText("全选");
                         Log.e("全不选", "All" +chooseState.notAll);
                         break;
                     case notAll:
                     case adefault:
                         isChooseAll = chooseState.All;
                         checkMap.clear();
-                        btnChoose.setText("全选");
+                        btnChoose.setText("全不选");
                         Log.e("全选", "notAll" +chooseState.All);
                         break;
 
