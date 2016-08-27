@@ -1,7 +1,8 @@
 package com.wujie.viewframe;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btnChoose;
     private ListView listView;
+    private PopupWindow mPop;
+
+
     private ListAdapter mAdapter;
     private List<String> mList = new ArrayList<>();
     private HashMap<Integer,String> checkMap = new HashMap<>();
@@ -39,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initHeader();
         getListInfo();
         initView();
+        initPopupView();
     }
 
     private void initHeader() {
@@ -53,6 +59,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView = (ListView) findViewById(R.id.list_view);
         mAdapter = new ListAdapter();
         listView.setAdapter(mAdapter);
+    }
+
+    private void initPopupView () {
+        View popupView = getLayoutInflater().inflate(R.layout.layout_popup, null);
+
+        mPop = new PopupWindow(popupView, LinearLayoutCompat.LayoutParams.MATCH_PARENT
+                , LinearLayoutCompat.LayoutParams.MATCH_PARENT, false);
+        mPop.setAnimationStyle(R.style.popupstyle);
+        mPop.setOutsideTouchable(true);
+
     }
 
     private void getListInfo() {
@@ -70,6 +86,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 isChooseAll = chooseState.adefault;
                 btnChoose.setText("全选");
                 checkMap.clear();
+                if(mPop.isShowing()) {
+                    mPop.dismiss();
+                } else {
+                    View headerView = getLayoutInflater().inflate(R.layout.layout_header,null);
+                    mPop.showAsDropDown(view);
+                    //mPop.showAtLocation(view, Gravity.CENTER, 0, 60);
+                }
+
+                //mPop.showAtLocation(view, Gravity.CENTER, 20, 20);
+
 
                 break;
             case R.id.btn_choose:
